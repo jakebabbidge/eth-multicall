@@ -54,14 +54,14 @@ contract Multicall {
     function tryAggregate(bool requireSuccess, Call[] memory calls) public returns (Result[] memory returnData) {
         returnData = new Result[](calls.length);
         for(uint256 i = 0; i < calls.length; i++) {
-			// Check the size of the code at address `calls[i].target`
+            // Check the size of the code at address `calls[i].target`
             uint32 size;
             address callTarget = calls[i].target;
             assembly {
                 size := extcodesize(callTarget)
             }
             
-			// If size of code is > 0, `calls[i].target` is a callable contract
+            // If size of code is > 0, `calls[i].target` is a callable contract
             if (size > 0) {
                 // This is a callable contract
                 (bool success, bytes memory ret) = calls[i].target.call(calls[i].callData);
